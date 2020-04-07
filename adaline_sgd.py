@@ -5,9 +5,9 @@ from slnn import SLNN
 
 class AdalineSGD(SLNN):
     def __init__(self, eta=0.01, n_iter=10, shuffle=True, random_state=None):
-        super().__init__(self, eta, n_iter)  # темп обучения, число эпох
-        self.w_initialized = False
-        self.shuffle = shuffle  # если True, перемешивает тренировочные данные в каждой эпохе для предотвращения
+        super().__init__(eta, n_iter)  # темп обучения, число эпох
+        self.__w_initialized = False
+        self.__shuffle = shuffle  # если True, перемешивает тренировочные данные в каждой эпохе для предотвращения
         # зацикливания
         self.__cost = None  # стоимость в каждой эпохе
 
@@ -20,8 +20,8 @@ class AdalineSGD(SLNN):
         self.__cost = []
 
         for i in range(self.n_iter):
-            if self.shuffle:
-                X, y = self.__shuffle(X, y)
+            if self.__shuffle:
+                X, y = self.__shuffle_data(X, y)
 
             cost = []
 
@@ -35,7 +35,7 @@ class AdalineSGD(SLNN):
 
     def partial_fit(self, X, y):
         """Выполнить подгонку под тренировочные данные без повторной инициализации весов"""
-        if not self.w_initialized:
+        if not self.__w_initialized:
             self.__initialize_weights(X.shape[1])
 
         if y.ravel().shape[0] > 1:
@@ -46,7 +46,7 @@ class AdalineSGD(SLNN):
 
         return self
 
-    def __shuffle(self, X, y):
+    def __shuffle_data(self, X, y):
         """Перемешать тренировочные данные"""
         r = np.random.permutation(len(y))
 
@@ -54,16 +54,16 @@ class AdalineSGD(SLNN):
 
     def __initialize_weights(self, m):
         """Инициализировать веса нулями"""
-        self.w_ = np.zeros(1 + m)
-        self.w_initialized = True
+        self.__w = np.zeros(1 + m)
+        self.__w_initialized = True
 
     def __update_weights(self, xi, target):
         """Применить правило обучеия для обновления весов"""
         output = self.__net_input(xi)
         error = target - output
 
-        self.w_[1:] += self.eta * xi.dot(error)
-        self.w_[0] += self.eta * error
+        self.__w[1:] += self.eta * xi.dot(error)
+        self.__w[0] += self.eta * error
 
         cost = 0.5 * error ** 2
 
@@ -71,7 +71,7 @@ class AdalineSGD(SLNN):
 
     def __net_input(self, X):
         """Рассчитать чистый вход"""
-        return np.dot(X, self.w_[1:]) + self.w_[0]
+        return np.dot(X, self.__w[1:]) + self.__w[0]
 
     def __activation(self, X):
         """Рассчитать линейную активацию"""

@@ -4,7 +4,7 @@ from slnn import SLNN
 
 class Perceptron(SLNN):
     def __init__(self, eta=0.01, n_iter=10):
-        super().__init__(self, eta, n_iter)  # темп обучения, число эпох
+        super().__init__(eta, n_iter)  # темп обучения, число эпох
         self.__w = None  # веса
         self.__errors = None  # число ошибок в каждой эпохе
 
@@ -33,7 +33,7 @@ class Perceptron(SLNN):
 
     def predict(self, X):
         """Вернуть метку класса после единичного скачка"""
-        return np.where(self.net_input(X) >= 0.0, 1, -1)  # функция активации
+        return np.where(self.__net_input(X) >= 0.0, 1, -1)  # функция активации
 
     @property
     def errors(self):
