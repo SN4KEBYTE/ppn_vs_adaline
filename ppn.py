@@ -27,7 +27,7 @@ class Perceptron(SLNN):
 
         return self
 
-    def net_input(self, X):
+    def __net_input(self, X):
         """Рассчитать чистый вход"""
         return np.dot(X, self.__w[1:]) + self.__w[0]  # вычисляем чистый вход как wT * x
 

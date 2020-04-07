@@ -24,17 +24,17 @@ class AdalineGD(SLNN):
 
         return self
 
-    def net_input(self, X):
+    def __net_input(self, X):
         """Рассчитать чистый вход"""
         return np.dot(X, self.__w[1:]) + self.__w[0]
 
-    def activation(self, X):
+    def __activation(self, X):
         """Рассчитать линейную активацию"""
         return self.net_input(X)
 
     def predict(self, X):
         """Вернуть метку класса после единичного скачка"""
-        return np.where(self.activation(X) >= 0.0, 1, -1)
+        return np.where(self.__activation(X) >= 0.0, 1, -1)
 
     @property
     def costs(self):

@@ -3,7 +3,7 @@ class SLNN:
         self.eta = eta
         self.n_iter = n_iter
 
-    def net_input(self, X):
+    def __net_input(self, X):
         pass
 
     def fit(self, X, y):
