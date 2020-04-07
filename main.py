@@ -7,14 +7,8 @@ from adaline_sgd import AdalineSGD
 from pdr import plot_decision_regions
 
 
-data_url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
-
-
 def main():
-    data = pd.read_csv(data_url, header=None)
-
-    # выведем последние 5 строк, чтобы убедиться, что данные были загружены правильно
-    # print(data.tail())
+    data = pd.read_csv('iris.data', header=None)
 
     # выделим из 100 тренировочных образцов столбец первого признака (длина чашелистика)
     # и столбец третьего признака (длина лепестка)
@@ -50,6 +44,8 @@ def main():
     ada_sgd = AdalineSGD(0.01, 15, random_state=1)
     ada_sgd.fit(X_std, y)
 
+    print(ada_gd.errors)
+
     # построим графики ошибок
     fig, ax = plt.subplots(1, 3, figsize=(24, 8))
     ax[0].plot(range(1, len(ppn.errors) + 1), ppn.errors, marker='o')
@@ -79,14 +75,14 @@ def main():
     ax[0].legend(loc='upper left')
 
     plot_decision_regions(X_std, y, ada_gd, ax=ax[1])
-    ax[1].set_xlabel('длина чашелистика (см)')
-    ax[1].set_ylabel('длина лепестка (см)')
+    ax[1].set_xlabel('длина чашелистика (см) [std]')
+    ax[1].set_ylabel('длина лепестка (см) [std]')
     ax[1].set_title('AdalineGD')
     ax[1].legend(loc='upper left')
 
     plot_decision_regions(X_std, y, ada_sgd, ax=ax[2])
-    ax[2].set_xlabel('длина чашелистика (см)')
-    ax[2].set_ylabel('длина лепестка (см)')
+    ax[2].set_xlabel('длина чашелистика (см) [std]')
+    ax[2].set_ylabel('длина лепестка (см) [std]')
     ax[2].set_title('AdalineSGD')
     ax[2].legend(loc='upper left')
 
